@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(methodOverride('_method'))
-const comments = [
+let comments = [
     {
         id: uuid(),
         username: "JohnJimmy44",
@@ -65,5 +65,6 @@ app.delete('/comments/:id', (req, res) => {
     const { id } = req.params;
     const foundComment = comments.find(c => c.id === id);
     comments = comments.filter(c => c.id !== id);
+    res.redirect('/comments')
 })
-app.listen(3000, () => { console.log('listening on port 3k') })
+app.listen(3000, () => { console.log('listening on port 3k') }) 

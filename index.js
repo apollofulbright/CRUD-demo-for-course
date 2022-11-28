@@ -3,7 +3,8 @@ const path = require('path');
 const { allowedNodeEnvironmentFlags } = require('process');
 const methodOverride = require('method-override')
 const app = express();
-const { v4: uuid } = require('uuid')
+const { v4: uuid } = require('uuid');
+const { AsyncLocalStorage } = require('async_hooks');
 app.use(express.urlencoded({ extended: true }))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
@@ -59,5 +60,10 @@ app.get('/comments/:id/edit', (req, res) => {
     const { id } = req.params;
     const comment = comments.find(c => c.id === id);
     res.render('comments/edit', { comment })
+})
+app.delete('/comments/:id', (req, res) => {
+    const { id } = req.params;
+    const foundComment = comments.find(c => c.id === id);
+    comments = comments.filter(c => c.id !== id);
 })
 app.listen(3000, () => { console.log('listening on port 3k') })
